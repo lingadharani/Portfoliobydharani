@@ -103,6 +103,49 @@ $('.hd-toggler').click(function () {
   });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const projectContainer = document.querySelector(".myworks-body"); // Your project grid container
+  const projects = Array.from(projectContainer.children); // All project items
+  const loader = document.createElement("div"); // Create a loader div
+  loader.className = "loader";
+  
+  let projectsPerPage = 6;
+  let currentIndex = projectsPerPage;
+
+  // Show only the first 6 projects initially
+  projects.forEach((project, index) => {
+      if (index >= projectsPerPage) {
+          project.style.display = "none";
+      }
+  });
+
+  // Function to load more projects
+  function loadMoreProjects() {
+      if (currentIndex >= projects.length) return; // Stop if all projects are shown
+
+      projectContainer.appendChild(loader); // Show loader
+
+      setTimeout(() => {
+          loader.remove(); // Remove loader
+          for (let i = currentIndex; i < currentIndex + projectsPerPage; i++) {
+              if (projects[i]) {
+                  projects[i].style.display = "block";
+              }
+          }
+          currentIndex += projectsPerPage;
+      }, 1500); // Simulate loading delay
+  }
+
+  // Detect when user scrolls near the bottom
+  window.addEventListener("scroll", () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+          loadMoreProjects();
+      }
+  });
+});
+
+
 
 
 
